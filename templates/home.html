@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+  <h1 class="my-4">Recherche de contraventions</h1>
+
+  <div class="mb-3">
+    <a href="{{ url_for('documentation') }}" class="btn btn-info">Voir la documentation de l'API</a>
+  </div>
+
+  <!-- Formulaire de recherche par nom d'établissement, propriétaire ou rue -->
+  <section>
+    <h2>Recherche de contraventions par nom</h2>
+    <form action="{{ url_for('search_results') }}" method="get" class="my-4">
+      <div class="form-group">
+        <label for="search">Recherche par nom :</label>
+        <input type="text" class="form-control" id="search" name="search" placeholder="Entrez un nom d'établissement, un propriétaire ou une rue">
+      </div>
+      <button type="submit" class="btn btn-primary">Rechercher</button>
+    </form>
+  </section>
+
+  <hr>
+
+  <!-- Formulaire de recherche par dates -->
+  <section>
+    <h2>Recherche de contraventions par date</h2>
+    <form id="dateSearchForm" class="my-4">
+      <div class="row">
+        <div class="col-md-6 form-group">
+          <label for="startDate">Date de début :</label>
+          <input type="date" class="form-control" id="startDate" name="startDate">
+        </div>
+        <div class="col-md-6 form-group">
+          <label for="endDate">Date de fin :</label>
+          <input type="date" class="form-control" id="endDate" name="endDate">
+        </div>
+      </div>
+      <button type="button" class="btn btn-primary" id="dateSearchButton">Rechercher</button>
+    </form>
+  </section>
+
+  <!-- Tableau des résultats pour la recherche par dates -->
+  <div class="table-responsive">
+    <table class="table" id="resultsTableDate" style="display:none;">
+      <thead>
+        <tr>
+          <th>Nom de l'établissement</th>
+          <th>Nombre de contraventions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Les résultats de la recherche par dates seront insérés ici -->
+      </tbody>
+    </table>
+  </div>
+
+  <hr>
+
+  <!-- Formulaire de recherche par établissement -->
+  <section>
+    <h2>Recherche par établissement</h2>
+    <form id="establishmentSearchForm" class="my-4">
+      <div class="form-group">
+        <label for="establishmentSelect">Choisir un établissement :</label>
+        <select class="form-control" id="establishmentSelect" name="establishment">
+          {% for restaurant in restaurants %}
+          <option>{{ restaurant[0] }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <button type="button" class="btn btn-primary" id="establishmentSearchButton">Rechercher</button>
+    </form>
+  </section>
+
+  <!-- Tableau des résultats pour la recherche par établissements -->
+  <div class="table-responsive">
+    <table class="table" id="resultsTableName" style="display:none;">
+      <thead>
+        <tr>
+          <th>Nom de l'établissement</th>
+          <th>Description de la contravention</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Les résultats de la recherche par établissements seront insérés ici -->
+      </tbody>
+    </table>
+  </div>
+
+  <hr>
+
+  <!-- Section affichage des établissements et contraventions -->
+  <section>
+    <h2>Établissements et leurs contraventions</h2>
+    <div class="my-3">
+      <button class="btn btn-secondary" id="toggleEstablishmentsButton">Afficher les établissements</button>
+      <button class="btn btn-secondary" id="toggleXMLButton">Afficher les établissements (XML)</button>
+      <button class="btn btn-secondary" id="fetchCSVEstablishmentsButton">Afficher les établissements (CSV)</button>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table" id="establishmentsViolationsTable" style="display: none;">
+        <thead>
+          <tr>
+            <th>Nom de l'établissement</th>
+            <th>Nombre de contraventions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Les résultats de la recherche par établissement seront insérés ici -->
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,163 @@
+#%RAML 1.0
+title: API de gestion des contraventions et violations
+version: 1.0
+mediaType: application/json
+
+types:
+  Contravention:
+    type: object
+    properties:
+      etablissement: string
+      nombre_contraventions: integer
+  Violation:
+    type: object
+    properties:
+      etablissement: string
+      description: string
+
+/contrevenants:
+  get:
+    description: Obtient la liste des contraventions entre deux dates.
+    queryParameters:
+      du:
+        required: true
+        type: date
+        description: Date de début au format ISO 8601.
+      au:
+        required: true
+        type: date
+        description: Date de fin au format ISO 8601.
+    responses:
+      200:
+        body:
+          application/json:
+            type: Contravention[]
+            example: |
+              [
+                {
+                  "etablissement": "Café ",
+                  "nombre_contraventions": 5
+                },
+                {
+                  "etablissement": "Boulangerie délices",
+                  "nombre_contraventions": 2
+                }
+              ]
+      500:
+        body:
+          application/json:
+            type: object
+            properties:
+              error: string
+            example: |
+              {
+                "error": "An error occured while fetching the data"
+              }
+
+/violations_par_nom:
+  get:
+    description: Obtient la liste des violations par nom exact d'établissement.
+    queryParameters:
+      nom:
+        required: true
+        type: string
+        description: Le nom exact de l'établissement.
+    responses:
+      200:
+        body:
+          application/json:
+            type: Violation[]
+            example: |
+              [
+                {
+                  "etablissement": "Café",
+                  "description": "Violation des normes d'hygiène"
+                },
+                {
+                  "etablissement": "Boulangerie délices",
+                  "description": "Absence d'affichage des prix"
+                }
+              ]
+      500:
+        body:
+          application/json:
+            type: object
+            properties:
+              error: string
+            example: |
+              {
+                "error": "An error occured while fetching the data"
+              }
+
+/establishments/violations:
+  get:
+    description: Obtient la liste des établissements avec le nombre de contraventions connues, triée par ordre décroissant du nombre de contraventions.
+    responses:
+      200:
+        body:
+          application/json:
+            type: Contravention[]
+            example: |
+              [
+                {
+                  "etablissement": "Restaurant bouffe",
+                  "nombre_contraventions": 12
+                },
+                {
+                  "etablissement": "Café ",
+                  "nombre_contraventions": 8
+                }
+              ]
+      500:
+        body:
+          application/json:
+            type: object
+            properties:
+              error: string
+            example: |
+              {
+                "error": "An error occured while fetching the data"
+              }
+
+
+/establishments/violations/xml:
+  get:
+    description: Obtient la liste des établissements avec le nombre de contraventions connues en format XML, triée par ordre décroissant du nombre de contraventions.
+    responses:
+      200:
+        body:
+          text/xml:
+            example: |
+              <?xml version="1.0" encoding="UTF-8"?>
+              <establishments>
+                <establishment>
+                  <name>Restaurant bouffe</name>
+                  <violationsCount>12</violationsCount>
+                </establishment>
+                <establishment>
+                  <name>Café</name>
+                  <violationsCount>8</violationsCount>
+                </establishment>
+              </establishments>
+      500:
+        body:
+          text/xml:
+            example: |
+              <error>An error occurred fetching the data</error>
+
+/establishments/violations/csv:
+  get:
+    description: Obtient la liste des établissements avec le nombre de contraventions connues en format CSV, triée par ordre décroissant du nombre de contraventions. Le fichier CSV est encodé en UTF-8.
+    responses:
+      200:
+        body:
+          text/csv:
+            example: |
+              "etablissement","nombre_contraventions"
+              "Restaurant bouffe","12"
+              "Café de la Gare","8"
+      500:
+        body:
+          text/plain:
+            example: |
+              An error occurred fetching the data

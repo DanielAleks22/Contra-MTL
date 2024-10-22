@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+  <h1>Résultats pour "{{ search_query }}"</h1>
+  <div class="table-responsive"> 
+    <table class="table table-striped">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">ID Pour</th>
+          <th scope="col">ID Comm</th>
+          <th scope="col">Date</th>
+          <th scope="col" class="d-none d-md-table-cell">Description</th>
+          <th scope="col">Adresse</th>
+          <th scope="col" class="d-none d-md-table-cell">Date Jugement</th>
+          <th scope="col">Établissement</th>
+          <th scope="col">Montant</th>
+          <th scope="col" class="d-none d-md-table-cell">Propriétaire</th>
+          <th scope="col" class="d-none d-md-table-cell">Ville</th>
+          <th scope="col">Statut</th>
+          <th scope="col" class="d-none d-md-table-cell">Date Statut</th>
+          <th scope="col">Catégorie</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for violation in violations %}
+        <tr>
+          <td>{{ violation[0] }}</td> 
+          <td>{{ violation[1] }}</td> 
+          <td>{{ violation[2] }}</td> 
+          <td class="d-none d-md-table-cell">{{ violation[3] }}</td> 
+          <td>{{ violation[4] }}</td> 
+          <td class="d-none d-md-table-cell">{{ violation[5] }}</td> 
+          <td>{{ violation[6] }}</td> 
+          <td>{{ violation[7] }}</td> 
+          <td class="d-none d-md-table-cell">{{ violation[8] }}</td> 
+          <td class="d-none d-md-table-cell">{{ violation[9] }}</td> 
+          <td>{{ violation[10] }}</td> 
+          <td class="d-none d-md-table-cell">{{ violation[11] }}</td> 
+          <td>{{ violation[12] }}</td> 
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="13">Aucune contravention trouvée.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

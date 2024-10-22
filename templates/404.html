@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="text-center">404 - Page non trouvée</h1>
+            <p class="text-center">La page que vous cherchez semble introuvable. Vérifiez l'URL ou retournez à la page d'accueil.</p>
+            <div class="text-center mt-4">
+                <a href="{{ url_for('index') }}" class="btn btn-primary">Retourner à l'accueil</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
